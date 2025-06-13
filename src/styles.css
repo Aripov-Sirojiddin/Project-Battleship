@@ -30,6 +30,10 @@ body{
   justify-content: center;
 }
 .board button {
+  color: red;
+  font-size: xx-large;
+  font-weight: bolder;
+  text-align: center;
   border: none;
   margin: 1px;
   min-height: 3rem;

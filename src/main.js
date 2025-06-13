@@ -5,15 +5,20 @@ import "./styles.css";
 
 (() => {
   const player1 = player("Smasnug");
+  const player2 = player("Jojo");
 
   const longShip = ship(5);
-  const coords = ["A1", "A2", "A3", "A4", "A5"];
+  const longShipCoords = ["A1", "A2", "A3", "A4", "A5"];
 
-  player1.gameBoard.placeShip(longShip, coords);
-  const dom = domManager(player1);
+  const mediumShip = ship(3);
+  const mediumShipCoords = ["B8", "C8", "D8"];
 
-  const boardContainer = document.getElementById("boards");
+  player1.gameBoard.placeShip(longShip, longShipCoords);
+  player1.gameBoard.placeShip(mediumShip, mediumShipCoords);
 
-  boardContainer.appendChild(dom.createBoard(player1.gameBoard.board, true));
-  boardContainer.appendChild(dom.createBoard());
+  player2.gameBoard.placeShip(longShip, longShipCoords);
+  player2.gameBoard.placeShip(mediumShip, mediumShipCoords);
+
+  const dom = domManager(player1, player2);
+  dom.createBothBoards();
 })();

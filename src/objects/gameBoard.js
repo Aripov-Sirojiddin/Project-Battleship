@@ -4,15 +4,17 @@ const gameBoard = () => {
 
   const placeShip = (ship, coordinates) => {
     fleetOfShips.push(ship);
-    for(const i in coordinates) {
+
+    for (const i in coordinates) {
       const coordinate = coordinates[i];
-      
-      if(board[coordinate] === undefined) {
+
+      if (board[coordinate] === undefined) {
         board[coordinate] = ship;
-      }else{ 
-        return "Can't place ship here."
+        ship.updateCoords(coordinate);
+      } else {
+        return "Can't place ship here.";
       }
-    };
+    }
   };
 
   const checkCoords = (coordinate) => board[coordinate];
@@ -28,10 +30,10 @@ const gameBoard = () => {
   };
 
   const isFleetDestroyed = () => {
-    for(const i in fleetOfShips) {
+    for (const i in fleetOfShips) {
       const ship = fleetOfShips[i];
-      
-      if(ship.getHealth() > 0) {
+
+      if (ship.getHealth() > 0) {
         return false;
       }
     }

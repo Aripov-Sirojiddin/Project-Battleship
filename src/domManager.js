@@ -1,5 +1,16 @@
 const domManager = (player, opponent) => {
-  const createBoard = (board, showShips) => {
+  const createBothBoards = () => {
+    const playerBoard = createBoard(player, true);
+    playerBoard.id = "player";
+    const opponentBoard = createBoard(opponent, false);
+    opponentBoard.id = "opponent";
+    const newChildren = [playerBoard, opponentBoard];
+
+    document.getElementById("boards").replaceChildren(...newChildren);
+  };
+
+  const createBoard = (player, showShips) => {
+    const board = player.gameBoard.board;
     const parentDiv = document.createElement("div");
 
     const playerLabel = document.createElement("h1");
@@ -28,7 +39,7 @@ const domManager = (player, opponent) => {
         if (showShips && board[button.id] !== undefined) {
           button.style.background = "black";
         }
-        button.addEventListener("click", () => {});
+        button.addEventListener("click", () => onSquareClick(button.id));
         boardDiv.appendChild(button);
       }
     }
@@ -36,12 +47,36 @@ const domManager = (player, opponent) => {
     return parentDiv;
   };
 
-  const onSquareClick = () => {
-    console.log("");
+  const onSquareClick = (coord) => {
+    const opponentBoard = document.querySelector("#opponent");
+    const button = opponentBoard.querySelector(`#${coord}`);
+    switch (opponent.gameBoard.receiveAttack(coord)) {
+      case "destroyed!!!":
+        button.textContent = "⦿";
+        button.disabled = true;
+        const destroyedShipCoords =
+          opponent.gameBoard.board[coord].getAllCoords();
+        for (let i in destroyedShipCoords) {
+          const coords = destroyedShipCoords[i];
+          const button = opponentBoard.querySelector(`#${coords}`);
+          button.style.background = "red";
+          button.style.color = "rgb(249, 173, 173)";
+        }
+        break;
+      case "hit!":
+        button.textContent = "⦿";
+        button.disabled = true;
+        break;
+      case "miss...":
+        button.style.color = "grey";
+        button.textContent = "×";
+        button.disabled = true;
+        break;
+    }
   };
 
   return {
-    createBoard,
+    createBothBoards,
   };
 };
 

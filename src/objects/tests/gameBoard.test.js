@@ -129,3 +129,16 @@ test("Place a ship in a coordinate that is already taken.", () => {
   //Ensure the original ship isn't overwriten.
   expect(board.checkCoords("A1")).toBe(mediumShip);
 });
+
+test("Place a ship in a coordinate that is already taken.", () => {
+  const board = gameBoard();
+
+  const mediumShip = ship(4);
+  const coordsMedium = ["A1", "A2", "A3", "A4"];
+
+  //Place ship successfully
+  board.placeShip(mediumShip, coordsMedium);
+
+  //Ensure the ship recieved all the coords
+  expect(mediumShip.getAllCoords()).toEqual(coordsMedium);
+});
