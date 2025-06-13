@@ -4,6 +4,7 @@ html {
 }
 h1 {
   padding: 0;
+  text-align: center;
   margin: 0;
   color: rgb(0, 191, 255);
 }
@@ -19,7 +20,6 @@ body{
   padding: 3rem;
   gap: 5rem;
 }
-
 #opponent button:hover {
   background: rgb(1, 167, 223);
 }
@@ -27,7 +27,6 @@ body{
 .board {
   display: grid;
   grid-template-columns: repeat(11, auto);
-  text-align: center;
 }
 .board p {
   display: flex;

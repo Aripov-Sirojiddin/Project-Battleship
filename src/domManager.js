@@ -1,4 +1,6 @@
 const domManager = (player, opponent) => {
+  let playerTurn = true;
+
   const createBothBoards = () => {
     const playerBoard = createBoard(player, true);
     playerBoard.id = "player";
@@ -52,13 +54,19 @@ const domManager = (player, opponent) => {
   };
 
   const sendAttack = (coord) => {
-    const opponentBoard = document.querySelector("#opponent");
-    updateButton(opponent, opponentBoard, coord);
+    if (playerTurn) {
+      const opponentBoard = document.querySelector("#opponent");
+      updateButton(opponent, opponentBoard, coord);
+      playerTurn = !playerTurn;
+    }
   };
 
   const receiveAttack = (coord) => {
-    const playerBoard = document.querySelector("#player");
-    updateButton(player, playerBoard, coord);
+    if (!playerTurn) {
+      const playerBoard = document.querySelector("#player");
+      updateButton(player, playerBoard, coord);
+      playerTurn = !playerTurn;
+    }
   };
 
   const updateButton = (player, boardDiv, coord) => {
