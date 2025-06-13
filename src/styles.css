@@ -11,29 +11,33 @@ body{
   height: 100vh;
   margin: 0;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
 }
-#board {
+#boards {
+  display: flex;
+  padding: 3rem;
+  gap: 5rem;
+}
+.board {
   display: grid;
   grid-template-columns: repeat(11, auto);
   text-align: center;
 }
-#board p {
+.board p {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-inline-end: 1.5rem;
 }
-#board button {
+.board button {
   border: none;
-  margin: 0.5px;
-  min-height: 5rem;
-  min-width: 5rem;
+  margin: 1px;
+  min-height: 3rem;
+  min-width: 3rem;
   background: rgb(0, 191, 255);
 }
 
-#board button:hover {
+button:hover {
   background: rgb(1, 167, 223);
 }
 .container {

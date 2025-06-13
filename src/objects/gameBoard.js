@@ -40,6 +40,7 @@ const gameBoard = () => {
   };
 
   return {
+    board,
     placeShip,
     checkCoords,
     receiveAttack,
