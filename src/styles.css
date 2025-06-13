@@ -1,0 +1,42 @@
+html {
+  height: 100vh;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+h1 {
+  padding: 0;
+  margin: 0;
+  color: rgb(0, 191, 255);
+}
+body{
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+#board {
+  display: grid;
+  grid-template-columns: repeat(11, auto);
+  text-align: center;
+}
+#board p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-inline-end: 1.5rem;
+}
+#board button {
+  border: none;
+  margin: 0.5px;
+  min-height: 5rem;
+  min-width: 5rem;
+  background: rgb(0, 191, 255);
+}
+
+#board button:hover {
+  background: rgb(1, 167, 223);
+}
+.container {
+  display: flex;
+  justify-content: center;
+}

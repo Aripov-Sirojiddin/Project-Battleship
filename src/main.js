@@ -1,5 +1,9 @@
-const ship = require("./objects/ship");
+import domManager from "./domManager";
+import player from "./objects/player";
+import "./styles.css"
 
 (()=> {
-  ship();
+  const player1 = player("Smasnug");
+  const dom = domManager(player1);
+  dom.createBoard();
 })();
