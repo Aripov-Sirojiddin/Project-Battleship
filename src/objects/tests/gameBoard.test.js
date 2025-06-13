@@ -36,7 +36,7 @@ test("Check empty coords should not hit a ship but recive undefined.", () => {
   expect(board.checkCoords("B1")).toBe(undefined);
 });
 
-test("Check empty coords should not hit a ship but recive undefined.", () => {
+test("Attack the ship at the coords and recive hit msg.", () => {
   const board = gameBoard();
 
   //Place ship
@@ -51,3 +51,62 @@ test("Check empty coords should not hit a ship but recive undefined.", () => {
   //Check ship health
   expect(longShip.getHealth()).toBe(4);
 });
+
+test('Should report "destroyed!!!" after attack to "Single square boat".', () => {
+  const board = gameBoard();
+
+  const longShip = ship(1);
+  const coords = ["A1"];
+
+  board.placeShip(longShip, coords);
+  //Make sure the ship is there
+  expect(board.checkCoords("A1")).toBe(longShip);
+
+  //Attack the ship and recive "destroyed!!!" msg
+  expect(board.attack("A1")).toBe("destroyed!!!");
+});
+
+test('If we attack the same coords of "destroyed!!!" ship msg should not change.', () => {
+  const board = gameBoard();
+
+  const longShip = ship(1);
+  const coords = ["A1"];
+
+  board.placeShip(longShip, coords);
+  //Make sure the ship is there
+  expect(board.checkCoords("A1")).toBe(longShip);
+
+  //Attack the ship and recive "destroyed!!!" msg
+  expect(board.attack("A1")).toBe("destroyed!!!");
+  expect(board.attack("A1")).toBe("destroyed!!!");
+});
+
+test("Check if all ships have been sunk should return true.", () => {
+  const board = gameBoard();
+
+  const smolShip = ship(1);
+  const coords = ["A1"];
+
+  board.placeShip(smolShip, coords);
+  board.attack("A1");
+
+  expect(board.isFleetDestroyed()).toBe(true);
+});
+
+test("Check if all ships have been sunk should return true.", () => {
+  const board = gameBoard();
+
+  const mediumShip = ship(4);
+  const coordsMedium = ["A1", "A2", "A3", "A4"];
+
+  const smolShip = ship(1);
+  const coordsSmol = ["B1"];
+
+  board.placeShip(mediumShip, coordsMedium);
+  board.placeShip(smolShip, coordsSmol);
+
+  board.attack("B1");
+
+  expect(board.isFleetDestroyed()).toBe(false);
+});
+
