@@ -39,7 +39,11 @@ const domManager = (player, opponent) => {
         if (showShips && board[button.id] !== undefined) {
           button.style.background = "black";
         }
-        button.addEventListener("click", () => onSquareClick(button.id));
+        if (showShips) {
+          button.disabled = true;
+        } else {
+          button.addEventListener("click", () => sendAttack(button.id));
+        }
         boardDiv.appendChild(button);
       }
     }
@@ -47,18 +51,27 @@ const domManager = (player, opponent) => {
     return parentDiv;
   };
 
-  const onSquareClick = (coord) => {
+  const sendAttack = (coord) => {
     const opponentBoard = document.querySelector("#opponent");
-    const button = opponentBoard.querySelector(`#${coord}`);
-    switch (opponent.gameBoard.receiveAttack(coord)) {
+    updateButton(opponent, opponentBoard, coord);
+  };
+
+  const receiveAttack = (coord) => {
+    const playerBoard = document.querySelector("#player");
+    updateButton(player, playerBoard, coord);
+  };
+
+  const updateButton = (player, boardDiv, coord) => {
+    const button = boardDiv.querySelector(`#${coord}`);
+    switch (player.gameBoard.receiveAttack(coord)) {
       case "destroyed!!!":
         button.textContent = "⦿";
         button.disabled = true;
         const destroyedShipCoords =
-          opponent.gameBoard.board[coord].getAllCoords();
+          player.gameBoard.board[coord].getAllCoords();
         for (let i in destroyedShipCoords) {
           const coords = destroyedShipCoords[i];
-          const button = opponentBoard.querySelector(`#${coords}`);
+          const button = boardDiv.querySelector(`#${coords}`);
           button.style.background = "red";
           button.style.color = "rgb(249, 173, 173)";
         }
@@ -74,9 +87,9 @@ const domManager = (player, opponent) => {
         break;
     }
   };
-
   return {
     createBothBoards,
+    receiveAttack,
   };
 };
 
