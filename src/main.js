@@ -10,7 +10,7 @@ const randomCoords = () => {
     const letter = String.fromCharCode(Math.round(Math.random() * 9) + 65);
     const number = Math.round(Math.random() * 9) + 1;
     result = `${letter}${number}`;
-  } while (moves.has(result));
+  } while (moves.has(result) && moves.size < 100);
   moves.add(result);
 
   return result;
@@ -39,5 +39,5 @@ const randomCoords = () => {
 
   setInterval(() => {
     dom.receiveAttack(randomCoords());
-  }, 1000);
+  }, 100);
 })();
