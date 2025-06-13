@@ -17,7 +17,7 @@ const gameBoard = () => {
 
   const checkCoords = (coordinate) => board[coordinate];
 
-  const attack = (coordinate) => {
+  const receiveAttack = (coordinate) => {
     const slotAtCoords = checkCoords(coordinate);
     if (slotAtCoords != undefined) {
       const health = slotAtCoords.hit();
@@ -42,7 +42,7 @@ const gameBoard = () => {
   return {
     placeShip,
     checkCoords,
-    attack,
+    receiveAttack,
     isFleetDestroyed,
   };
 };

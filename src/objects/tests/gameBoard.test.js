@@ -46,7 +46,7 @@ test("Attack the ship at the coords and recive hit msg.", () => {
   board.placeShip(longShip, coords);
 
   //Attack ship
-  expect(board.attack("A1")).toBe("hit!");
+  expect(board.receiveAttack("A1")).toBe("hit!");
 
   //Check ship health
   expect(longShip.getHealth()).toBe(4);
@@ -63,7 +63,7 @@ test('Should report "destroyed!!!" after attack to "Single square boat".', () =>
   expect(board.checkCoords("A1")).toBe(longShip);
 
   //Attack the ship and recive "destroyed!!!" msg
-  expect(board.attack("A1")).toBe("destroyed!!!");
+  expect(board.receiveAttack("A1")).toBe("destroyed!!!");
 });
 
 test('If we attack the same coords of "destroyed!!!" ship msg should not change.', () => {
@@ -77,8 +77,8 @@ test('If we attack the same coords of "destroyed!!!" ship msg should not change.
   expect(board.checkCoords("A1")).toBe(longShip);
 
   //Attack the ship and recive "destroyed!!!" msg
-  expect(board.attack("A1")).toBe("destroyed!!!");
-  expect(board.attack("A1")).toBe("destroyed!!!");
+  expect(board.receiveAttack("A1")).toBe("destroyed!!!");
+  expect(board.receiveAttack("A1")).toBe("destroyed!!!");
 });
 
 test("Check if all ships have been sunk should return true.", () => {
@@ -88,7 +88,7 @@ test("Check if all ships have been sunk should return true.", () => {
   const coords = ["A1"];
 
   board.placeShip(smolShip, coords);
-  board.attack("A1");
+  board.receiveAttack("A1");
 
   expect(board.isFleetDestroyed()).toBe(true);
 });
@@ -105,7 +105,7 @@ test("Check if all ships have been sunk should return true.", () => {
   board.placeShip(mediumShip, coordsMedium);
   board.placeShip(smolShip, coordsSmol);
 
-  board.attack("B1");
+  board.receiveAttack("B1");
 
   expect(board.isFleetDestroyed()).toBe(false);
 });
