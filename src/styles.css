@@ -19,6 +19,11 @@ body{
   padding: 3rem;
   gap: 5rem;
 }
+
+#opponent button:hover {
+  background: rgb(1, 167, 223);
+}
+
 .board {
   display: grid;
   grid-template-columns: repeat(11, auto);
@@ -41,9 +46,6 @@ body{
   background: rgb(0, 191, 255);
 }
 
-button:hover {
-  background: rgb(1, 167, 223);
-}
 .container {
   display: flex;
   justify-content: center;
