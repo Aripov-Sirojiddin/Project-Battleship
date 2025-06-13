@@ -4,9 +4,15 @@ const gameBoard = () => {
 
   const placeShip = (ship, coordinates) => {
     fleetOfShips.push(ship);
-    coordinates.forEach((coordinate) => {
-      board[coordinate] = ship;
-    });
+    for(const i in coordinates) {
+      const coordinate = coordinates[i];
+      
+      if(board[coordinate] === undefined) {
+        board[coordinate] = ship;
+      }else{ 
+        return "Can't place ship here."
+      }
+    };
   };
 
   const checkCoords = (coordinate) => board[coordinate];

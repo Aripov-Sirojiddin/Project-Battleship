@@ -110,3 +110,22 @@ test("Check if all ships have been sunk should return true.", () => {
   expect(board.isFleetDestroyed()).toBe(false);
 });
 
+
+test("Place a ship in a coordinate that is already taken.", () => {
+  const board = gameBoard();
+
+  const mediumShip = ship(4);
+  const coordsMedium = ["A1", "A2", "A3", "A4"];
+
+  const smolShip = ship(1);
+  const coordsSmol = ["A1"];
+
+  //Place ship successfully
+  board.placeShip(mediumShip, coordsMedium);
+
+  //Place ship un-successfully
+  expect(board.placeShip(smolShip, coordsSmol)).toBe("Can't place ship here.");
+
+  //Ensure the original ship isn't overwriten.
+  expect(board.checkCoords("A1")).toBe(mediumShip);
+});
