@@ -104,7 +104,11 @@ const boardBuilder = (player) => {
     const isVertical = shipContainer.classList.contains("rotate");
     const coords = event.target.id;
 
-    placeshipOnBoard(size, isVertical, coords) ? shipContainer.remove() : undefined;
+    if (placeshipOnBoard(size, isVertical, coords)) {
+      shipContainer.remove();
+    } else {
+      undefined;
+    }
   };
 
   const placeshipOnBoard = (size, isVertical, coords) => {
@@ -116,7 +120,7 @@ const boardBuilder = (player) => {
     let start = coords.charCodeAt(0);
 
     let row;
-    const column = coords.charAt(1);
+    const column = coords.substring(1);
 
     const shipCoords = [];
     for (let i = start; i < start + Number(size); i++) {
@@ -134,7 +138,7 @@ const boardBuilder = (player) => {
 
   const placeHorizontal = (size, coords) => {
     const row = coords.charAt(0);
-    const start = Number(coords.charAt(1));
+    const start = Number(coords.substring(1));
     const shipCoords = [];
     for (let i = start; i < start + Number(size); i++) {
       const boardCoords = `${row}${i}`;

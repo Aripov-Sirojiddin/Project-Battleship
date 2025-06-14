@@ -25,7 +25,7 @@ const gameBoard = () => {
 
   const markSurroundingsForOne = (coordinate) => {
     const row = Number(coordinate.charCodeAt(0));
-    const column = Number(coordinate.charAt(1));
+    const column = Number(coordinate.substring(1));
 
     const surroundings = [
       //Top
@@ -34,8 +34,8 @@ const gameBoard = () => {
       `${String.fromCharCode(row - 1)}${column + 1}`,
 
       //Sides
-      `${String.fromCharCode(row)}${column-1}`,
-      `${String.fromCharCode(row)}${column+1}`,
+      `${String.fromCharCode(row)}${column - 1}`,
+      `${String.fromCharCode(row)}${column + 1}`,
 
       //Bottom
       `${String.fromCharCode(row + 1)}${column - 1}`,
@@ -44,10 +44,9 @@ const gameBoard = () => {
     ];
 
     surroundings.forEach((coords) => {
-      
-      if(board[coords] === undefined) {
+      if (board[coords] === undefined) {
         board[coords] = "taken";
-      } 
+      }
     });
   };
 

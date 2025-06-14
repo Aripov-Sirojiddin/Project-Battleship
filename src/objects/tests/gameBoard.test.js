@@ -232,3 +232,26 @@ test("Should not place a ship in a taken slot.", () => {
   expect(board.placeShip(newShip, newCoords)).toBe("Can't place ship here.");
   expect(board.checkCoords("C1")).toBe("taken");
 });
+
+
+test("Should mark surroundings as unusable space.", () => {
+  const board = gameBoard();
+
+  const mediumShip = ship(1);
+  const coordsMedium = ["D10"];
+
+  board.placeShip(mediumShip, coordsMedium);
+  //top
+  expect(board.checkCoords("C9")).toBe("taken");
+  expect(board.checkCoords("C10")).toBe("taken");
+  expect(board.checkCoords("C11")).toBe("taken");
+
+  //sides
+  expect(board.checkCoords("D9")).toBe("taken");
+  expect(board.checkCoords("D11")).toBe("taken");
+
+  //bottom
+  expect(board.checkCoords("E9")).toBe("taken");
+  expect(board.checkCoords("E10")).toBe("taken");
+  expect(board.checkCoords("E11")).toBe("taken");
+});
