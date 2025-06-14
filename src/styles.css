@@ -42,16 +42,22 @@ body{
 .clickable:hover {
   background: rgb(1, 167, 223);
 }
-
+.ship_options {
+  overflow-y: scroll;
+  max-height: 35rem;
+}
 .ship_container {
+  z-index: 10;
+  padding: 5px;
   display: grid;
   grid-template-columns: repeat(5, 1fr); 
 }
 .ship_container button {
+  z-index: -10;
   border: none;
   margin: 1px;
-  min-height: 2rem;
-  min-width: 2rem;
+  min-height: 3rem;
+  min-width: 3rem;
   background: rgb(0, 0, 0);
 }
 

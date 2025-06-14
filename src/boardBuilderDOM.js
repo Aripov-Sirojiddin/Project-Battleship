@@ -47,24 +47,28 @@ const boardBuilder = (player) => {
 
   const showShipOptions = () => {
     const parentDiv = document.createElement("div");
-
     const label = document.createElement("h1");
     label.textContent = "The Fleet!";
     parentDiv.appendChild(label);
 
-    const shipSizes = [5, 4, 3, 3, 2, 2, 1, 1, 1, 1];
+    const shipsParent = document.createElement("div");
+    shipsParent.classList.add("ship_options");
+    const shipSizes = [5, 4, 3, 2, 2, 1, 1, 1, 1];
 
     shipSizes.forEach((size) => {
       const shipContainer = document.createElement("div");
       shipContainer.classList.add("ship_container");
+      shipContainer.draggable = true;
+      shipContainer.addEventListener("click", () => console.log("E"));
       const split = document.createElement("hr");
       for (let i = 0; i < size; i++) {
         const button = document.createElement("button");
         shipContainer.appendChild(button);
       }
-      parentDiv.appendChild(split)
-      parentDiv.appendChild(shipContainer);
+      shipsParent.appendChild(shipContainer);
+      shipsParent.appendChild(split);
     });
+    parentDiv.appendChild(shipsParent);
     return parentDiv;
   };
 
