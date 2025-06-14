@@ -41,7 +41,7 @@ const gameBoard = () => {
     return true;
   };
 
-  const markSurroundingsForOne = (coordinate, unmark = false) => {
+  const markSurroundingsForOne = (coordinate) => {
     const row = Number(coordinate.charCodeAt(0));
     const column = Number(coordinate.substring(1));
 
@@ -61,10 +61,8 @@ const gameBoard = () => {
       `${String.fromCharCode(row + 1)}${column + 1}`,
     ];
     surroundings.forEach((coords) => {
-      if (unmark == false && board[coords] === undefined) {
+      if (board[coords] === undefined) {
         board[coords] = "taken";
-      } else {
-        delete board[coords];
       }
     });
   };

@@ -144,6 +144,7 @@ const boardBuilder = (player) => {
       colorButtons(shipCoords);
       shipContainer.remove();
     }
+    console.log(player.gameBoard.board)
   };
 
   const placeVertical = (size, coords) => {
