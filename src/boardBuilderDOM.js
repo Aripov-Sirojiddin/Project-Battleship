@@ -38,6 +38,10 @@ const boardBuilder = (player) => {
         const button = document.createElement("button");
         button.id = `${label}${i + 1}`;
         button.classList.add("clickable");
+
+        button.addEventListener("drop", (e) => dropHandler(e));
+        button.addEventListener("dragover", (e) => dragoverHandler(e));
+
         boardDiv.appendChild(button);
       }
     }
@@ -55,23 +59,103 @@ const boardBuilder = (player) => {
     shipsParent.classList.add("ship_options");
     const shipSizes = [5, 4, 3, 2, 2, 1, 1, 1, 1];
 
-    shipSizes.forEach((size) => {
+    for (let i in shipSizes) {
+      const size = shipSizes[i];
+
       const shipContainer = document.createElement("div");
       shipContainer.classList.add("ship_container");
+      shipContainer.setAttribute("size", size);
+      shipContainer.id = `ship-${i}`;
       shipContainer.draggable = true;
-      shipContainer.addEventListener("click", () => console.log("E"));
-      const split = document.createElement("hr");
+
+      shipContainer.addEventListener("dragstart", (e) => dragstartHandler(e));
+      shipContainer.addEventListener("click", () => {
+        if (shipContainer.classList.contains("rotate")) {
+          shipContainer.classList.remove("rotate");
+        } else {
+          shipContainer.classList.add("rotate");
+        }
+      });
+
       for (let i = 0; i < size; i++) {
         const button = document.createElement("button");
         shipContainer.appendChild(button);
       }
       shipsParent.appendChild(shipContainer);
-      shipsParent.appendChild(split);
-    });
+    }
+
     parentDiv.appendChild(shipsParent);
     return parentDiv;
   };
 
+  const dragstartHandler = (event) => {
+    event.dataTransfer.setData("ship-id", event.target.id);
+  };
+  const dragoverHandler = (event) => {
+    event.preventDefault();
+  };
+
+  const dropHandler = (event) => {
+    event.preventDefault();
+    const shipContainer = document.getElementById(
+      event.dataTransfer.getData("ship-id")
+    );
+    const size = shipContainer.getAttribute("size");
+    const isVertical = shipContainer.classList.contains("rotate");
+    const coords = event.target.id;
+
+    placeshipOnBoard(size, isVertical, coords) ? shipContainer.remove() : undefined;
+  };
+
+  const placeshipOnBoard = (size, isVertical, coords) => {
+    return isVertical
+      ? placeVertical(size, coords)
+      : placeHorizontal(size, coords);
+  };
+  const placeVertical = (size, coords) => {
+    let start = coords.charCodeAt(0);
+
+    let row;
+    const column = coords.charAt(1);
+
+    const shipCoords = [];
+    for (let i = start; i < start + Number(size); i++) {
+      row = String.fromCharCode(i);
+      const boardCoords = `${row}${column}`;
+      shipCoords.push(boardCoords);
+    }
+    if (player.gameBoard.placeShip(ship(size), shipCoords) === "Success!") {
+      colorButtons(shipCoords);
+      return true;
+    }
+
+    return false;
+  };
+
+  const placeHorizontal = (size, coords) => {
+    const row = coords.charAt(0);
+    const start = Number(coords.charAt(1));
+    const shipCoords = [];
+    for (let i = start; i < start + Number(size); i++) {
+      const boardCoords = `${row}${i}`;
+      shipCoords.push(boardCoords);
+    }
+
+    if (player.gameBoard.placeShip(ship(size), shipCoords) === "Success!") {
+      colorButtons(shipCoords);
+      return true;
+    }
+    return false;
+  };
+
+  const colorButtons = (coordinates) => {
+    for (let i in coordinates) {
+      const boardCoords = coordinates[i];
+      const button = document.getElementById(boardCoords);
+      button.classList.add("ship");
+      button.style.background = "rgb(0, 163, 22)";
+    }
+  };
   return {
     showDialog,
   };

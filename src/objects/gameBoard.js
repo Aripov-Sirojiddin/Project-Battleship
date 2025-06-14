@@ -15,6 +15,7 @@ const gameBoard = () => {
         return "Can't place ship here.";
       }
     }
+    return "Success!";
   };
 
   const checkCoords = (coordinate) => board[coordinate];
