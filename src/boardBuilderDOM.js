@@ -38,6 +38,7 @@ const boardBuilder = (player) => {
         const button = document.createElement("button");
         button.id = `${label}${i + 1}`;
         button.classList.add("clickable");
+        button.classList.add("blue_btn");
 
         button.addEventListener("drop", (e) => dropHandler(e));
         button.addEventListener("dragover", (e) => dragoverHandler(e));
@@ -79,6 +80,7 @@ const boardBuilder = (player) => {
 
       for (let i = 0; i < size; i++) {
         const button = document.createElement("button");
+        button.classList.add("green");
         shipContainer.appendChild(button);
       }
       shipsParent.appendChild(shipContainer);
@@ -90,6 +92,9 @@ const boardBuilder = (player) => {
 
   const dragstartHandler = (event) => {
     event.dataTransfer.setData("ship-id", event.target.id);
+    const shipContainer = document.getElementById(
+      event.dataTransfer.getData("ship-id")
+    );
   };
   const dragoverHandler = (event) => {
     event.preventDefault();
@@ -104,8 +109,8 @@ const boardBuilder = (player) => {
     const isVertical = shipContainer.classList.contains("rotate");
     const coords = event.target.id;
 
+    event.target.appendChild(shipContainer);
     if (placeshipOnBoard(size, isVertical, coords)) {
-      shipContainer.remove();
     } else {
       undefined;
     }

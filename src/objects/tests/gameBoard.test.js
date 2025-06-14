@@ -196,7 +196,6 @@ test("Should mark surroundings as unusable space but it shouldn't erase the ship
   expect(board.checkCoords("B4")).toBe(mediumShip);
 });
 
-
 test("Should not place a ship in a taken slot.", () => {
   const board = gameBoard();
 
@@ -233,7 +232,6 @@ test("Should not place a ship in a taken slot.", () => {
   expect(board.checkCoords("C1")).toBe("taken");
 });
 
-
 test("Should mark surroundings as unusable space.", () => {
   const board = gameBoard();
 
@@ -254,4 +252,27 @@ test("Should mark surroundings as unusable space.", () => {
   expect(board.checkCoords("E9")).toBe("taken");
   expect(board.checkCoords("E10")).toBe("taken");
   expect(board.checkCoords("E11")).toBe("taken");
+});
+
+test("Check coords to be within bounds of the board. Should be true.", () => {
+  const board = gameBoard();
+
+  const coords = ["A1", "A2", "A3", "A4", "A5"];
+
+  expect(board.coordsWithinBounds(coords)).toBe(true);
+});
+
+test("Check coords to be within bounds of the board. Should be true.", () => {
+  const board = gameBoard();
+
+  const coords = ["A8", "A9", "A10", "A11", "A12"];
+
+  expect(board.coordsWithinBounds(coords)).toBe(false);
+});
+test("Check coords to be within bounds of the board. Should be true.", () => {
+  const board = gameBoard();
+
+  const coords = ["H10", "I10", "J10", "K10", "L10"];
+
+  expect(board.coordsWithinBounds(coords)).toBe(false);
 });

@@ -23,6 +23,19 @@ const gameBoard = () => {
     }
   };
 
+  const coordsWithinBounds = (coordinates) => {
+    for (let i in coordinates) {
+      const coordinate = coordinates[i];
+      const row = Number(coordinate.charCodeAt(0));
+      const column = Number(coordinate.substring(1));
+
+      if(row > 74 || row < 65 || column > 10 || column < 1) {
+        return false;
+      }
+    }
+    return true;
+  };
+
   const markSurroundingsForOne = (coordinate) => {
     const row = Number(coordinate.charCodeAt(0));
     const column = Number(coordinate.substring(1));
@@ -77,6 +90,7 @@ const gameBoard = () => {
   return {
     board,
     placeShip,
+    coordsWithinBounds,
     checkCoords,
     receiveAttack,
     isFleetDestroyed,

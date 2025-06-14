@@ -51,18 +51,34 @@ body{
   padding: 5px;
   display: flex;
 }
+.ship_container.rotate {
+  gap: 1px;
+}
+.board .ship_container {
+  padding: 0px;
+}
+
+.board .ship_container button {
+  z-index: 1;
+}
 
 .rotate {
   flex-direction: column;
 }
 .ship_container button {
-  z-index: -10;
+  z-index: -1;
   border: none;
   margin: 1px;
   height: 3rem;
   width: 3rem;
+  min-height: 3rem;
+  min-width: 3rem;
+}
+
+.green {
   background: rgb(0, 163, 22);
 }
+
 .board {
   display: grid;
   grid-template-columns: repeat(11, auto);
@@ -72,15 +88,20 @@ body{
   align-items: center;
   justify-content: center;
 }
-.board button {
+.board .blue_btn {
+  white-space: nowrap;
+  flex-wrap: nowrap;
+  z-index: 0;
+  padding: 0;
+  flex-wrap: nowrap;
   color: red;
   font-size: xx-large;
   font-weight: bolder;
   text-align: center;
   border: none;
   margin: 1px;
-  min-height: 3rem;
-  min-width: 3rem;
+  height: 3rem;
+  width: 3rem;
   background: rgb(0, 191, 255);
 }
 
