@@ -8,6 +8,12 @@ h1 {
   margin: 0;
   color: rgb(0, 191, 255);
 }
+hr {
+  height:1px;
+  border-width:0;
+  color:gray;
+  background-color:gray
+}
 body{
   height: 100vh;
   margin: 0;
@@ -20,8 +26,33 @@ body{
   padding: 3rem;
   gap: 5rem;
 }
-#opponent button:hover {
+
+.modal {
+  display: flex;
+  gap: 2rem;
+  background: white;
+  position: fixed;
+  z-index: 1;
+  padding: 2rem;
+  align-self: center;
+  border-radius: 0.5rem;
+  box-shadow: 5px 5px 10px rgb(202, 202, 202);
+}
+
+.clickable:hover {
   background: rgb(1, 167, 223);
+}
+
+.ship_container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); 
+}
+.ship_container button {
+  border: none;
+  margin: 1px;
+  min-height: 2rem;
+  min-width: 2rem;
+  background: rgb(0, 0, 0);
 }
 
 .board {

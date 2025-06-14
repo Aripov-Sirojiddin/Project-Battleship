@@ -1,4 +1,16 @@
-const domManager = (player, opponent) => {
+const moves = new Set();
+const randomCoords = () => {
+  let result = undefined;
+  do {
+    const letter = String.fromCharCode(Math.round(Math.random() * 9) + 65);
+    const number = Math.round(Math.random() * 9) + 1;
+    result = `${letter}${number}`;
+  } while (moves.has(result) && moves.size < 100);
+  moves.add(result);
+  return result;
+};
+
+const gameDOM = (player, opponent) => {
   let playerTurn = true;
 
   const createBothBoards = () => {
@@ -44,6 +56,7 @@ const domManager = (player, opponent) => {
         if (showShips) {
           button.disabled = true;
         } else {
+          button.classList.add("clickable");
           button.addEventListener("click", () => sendAttack(button.id));
         }
         boardDiv.appendChild(button);
@@ -58,6 +71,7 @@ const domManager = (player, opponent) => {
       const opponentBoard = document.querySelector("#opponent");
       updateButton(opponent, opponentBoard, coord);
       playerTurn = !playerTurn;
+      receiveAttack(randomCoords());
     }
   };
 
@@ -101,4 +115,4 @@ const domManager = (player, opponent) => {
   };
 };
 
-module.exports = domManager;
+module.exports = gameDOM;
