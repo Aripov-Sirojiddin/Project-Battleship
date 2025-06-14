@@ -80,7 +80,7 @@ const boardBuilder = (player) => {
 
       for (let i = 0; i < size; i++) {
         const button = document.createElement("button");
-        button.classList.add("green");
+        button.classList.add("ship");
         shipContainer.appendChild(button);
       }
       shipsParent.appendChild(shipContainer);
@@ -106,14 +106,25 @@ const boardBuilder = (player) => {
       event.dataTransfer.getData("ship-id")
     );
     const size = shipContainer.getAttribute("size");
-    const isVertical = shipContainer.classList.contains("rotate");
+    let isVertical = shipContainer.classList.contains("rotate");
     const coords = event.target.id;
 
-    event.target.appendChild(shipContainer);
-    if (placeshipOnBoard(size, isVertical, coords)) {
-    } else {
-      undefined;
+    let shipCoords = placeshipOnBoard(size, isVertical, coords);
+    if (shipCoords) {
+      if (player.gameBoard.placeShip(ship(size), shipCoords) === "Success!") {
+        colorButtons(shipCoords);
+      }
     }
+  };
+
+  const removeShipFromBoard = (coords) => {
+    for (let i in coords) {
+      const coordinate = coords[i];
+      const button = document.getElementById(coordinate);
+      button.classList.remove("ship");
+      button.style.background = "rgb(0, 191, 255)";
+    }
+    player.gameBoard.removeCoords(coords);
   };
 
   const placeshipOnBoard = (size, isVertical, coords) => {
@@ -121,6 +132,7 @@ const boardBuilder = (player) => {
       ? placeVertical(size, coords)
       : placeHorizontal(size, coords);
   };
+
   const placeVertical = (size, coords) => {
     let start = coords.charCodeAt(0);
 
@@ -133,12 +145,7 @@ const boardBuilder = (player) => {
       const boardCoords = `${row}${column}`;
       shipCoords.push(boardCoords);
     }
-    if (player.gameBoard.placeShip(ship(size), shipCoords) === "Success!") {
-      colorButtons(shipCoords);
-      return true;
-    }
-
-    return false;
+    return shipCoords;
   };
 
   const placeHorizontal = (size, coords) => {
@@ -149,12 +156,7 @@ const boardBuilder = (player) => {
       const boardCoords = `${row}${i}`;
       shipCoords.push(boardCoords);
     }
-
-    if (player.gameBoard.placeShip(ship(size), shipCoords) === "Success!") {
-      colorButtons(shipCoords);
-      return true;
-    }
-    return false;
+    return shipCoords;
   };
 
   const colorButtons = (coordinates) => {

@@ -7,7 +7,7 @@ const gameBoard = () => {
 
     for (const i in coordinates) {
       const coordinate = coordinates[i];
-      if (board[coordinate] === undefined) {
+      if (coordsWithinBounds(coordinates) && board[coordinate] === undefined) {
         board[coordinate] = ship;
         ship.updateCoords(coordinate);
       } else {
@@ -22,21 +22,27 @@ const gameBoard = () => {
       markSurroundingsForOne(coordinates[i]);
     }
   };
-
+  const removeCoords = (coordinates) => {
+    console.log(coordinates)
+    for (let i in coordinates) {
+      markSurroundingsForOne(coordinates[i], true);
+      delete board[coordinates[i]];
+    }
+  };
   const coordsWithinBounds = (coordinates) => {
     for (let i in coordinates) {
       const coordinate = coordinates[i];
       const row = Number(coordinate.charCodeAt(0));
       const column = Number(coordinate.substring(1));
 
-      if(row > 74 || row < 65 || column > 10 || column < 1) {
+      if (row > 74 || row < 65 || column > 10 || column < 1) {
         return false;
       }
     }
     return true;
   };
 
-  const markSurroundingsForOne = (coordinate) => {
+  const markSurroundingsForOne = (coordinate, unmark = false) => {
     const row = Number(coordinate.charCodeAt(0));
     const column = Number(coordinate.substring(1));
 
@@ -55,10 +61,11 @@ const gameBoard = () => {
       `${String.fromCharCode(row + 1)}${column}`,
       `${String.fromCharCode(row + 1)}${column + 1}`,
     ];
-
     surroundings.forEach((coords) => {
-      if (board[coords] === undefined) {
+      if (unmark == false && board[coords] === undefined) {
         board[coords] = "taken";
+      } else {
+        delete board[coords];
       }
     });
   };
@@ -89,6 +96,7 @@ const gameBoard = () => {
 
   return {
     board,
+    removeCoords,
     placeShip,
     coordsWithinBounds,
     checkCoords,
