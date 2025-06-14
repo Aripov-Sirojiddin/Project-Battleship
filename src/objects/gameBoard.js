@@ -7,7 +7,6 @@ const gameBoard = () => {
 
     for (const i in coordinates) {
       const coordinate = coordinates[i];
-
       if (board[coordinate] === undefined) {
         board[coordinate] = ship;
         ship.updateCoords(coordinate);
@@ -15,14 +14,48 @@ const gameBoard = () => {
         return "Can't place ship here.";
       }
     }
+    markSurroundings(coordinates);
     return "Success!";
+  };
+  const markSurroundings = (coordinates) => {
+    for (let i in coordinates) {
+      markSurroundingsForOne(coordinates[i]);
+    }
+  };
+
+  const markSurroundingsForOne = (coordinate) => {
+    const row = Number(coordinate.charCodeAt(0));
+    const column = Number(coordinate.charAt(1));
+
+    const surroundings = [
+      //Top
+      `${String.fromCharCode(row - 1)}${column - 1}`,
+      `${String.fromCharCode(row - 1)}${column}`,
+      `${String.fromCharCode(row - 1)}${column + 1}`,
+
+      //Sides
+      `${String.fromCharCode(row)}${column-1}`,
+      `${String.fromCharCode(row)}${column+1}`,
+
+      //Bottom
+      `${String.fromCharCode(row + 1)}${column - 1}`,
+      `${String.fromCharCode(row + 1)}${column}`,
+      `${String.fromCharCode(row + 1)}${column + 1}`,
+    ];
+
+    surroundings.forEach((coords) => {
+      
+      if(board[coords] === undefined) {
+        board[coords] = "taken";
+      } 
+    });
   };
 
   const checkCoords = (coordinate) => board[coordinate];
 
   const receiveAttack = (coordinate) => {
     const slotAtCoords = checkCoords(coordinate);
-    if (slotAtCoords != undefined) {
+    if (typeof slotAtCoords === "object") {
       const health = slotAtCoords.hit();
       return health === 0 ? "destroyed!!!" : "hit!";
     } else {

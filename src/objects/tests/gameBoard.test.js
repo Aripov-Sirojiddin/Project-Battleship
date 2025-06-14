@@ -33,7 +33,8 @@ test("Check empty coords should not hit a ship but recive undefined.", () => {
 
   board.placeShip(longShip, coords);
 
-  expect(board.checkCoords("B1")).toBe(undefined);
+  expect(board.checkCoords("B1")).toBe("taken");
+  expect(board.checkCoords("C1")).toBe(undefined);
 });
 
 test("Attack the ship at the coords and recive hit msg.", () => {
@@ -72,7 +73,7 @@ test('If we attack the same coords of "destroyed!!!" ship msg should not change.
   const longShip = ship(1);
   const coords = ["A1"];
 
-  board.placeShip(longShip, coords);
+  expect(board.placeShip(longShip, coords)).toBe("Success!");
   //Make sure the ship is there
   expect(board.checkCoords("A1")).toBe(longShip);
 
@@ -110,7 +111,6 @@ test("Check if all ships have been sunk should return true.", () => {
   expect(board.isFleetDestroyed()).toBe(false);
 });
 
-
 test("Place a ship in a coordinate that is already taken.", () => {
   const board = gameBoard();
 
@@ -121,7 +121,7 @@ test("Place a ship in a coordinate that is already taken.", () => {
   const coordsSmol = ["A1"];
 
   //Place ship successfully
-  board.placeShip(mediumShip, coordsMedium);
+  expect(board.placeShip(mediumShip, coordsMedium)).toBe("Success!");
 
   //Place ship un-successfully
   expect(board.placeShip(smolShip, coordsSmol)).toBe("Can't place ship here.");
@@ -141,4 +141,94 @@ test("Place a ship in a coordinate that is already taken.", () => {
 
   //Ensure the ship recieved all the coords
   expect(mediumShip.getAllCoords()).toEqual(coordsMedium);
+});
+
+test("Should mark surroundings as unusable space.", () => {
+  const board = gameBoard();
+
+  const mediumShip = ship(1);
+  const coordsMedium = ["B2"];
+
+  board.placeShip(mediumShip, coordsMedium);
+  //top
+  expect(board.checkCoords("A1")).toBe("taken");
+  expect(board.checkCoords("A2")).toBe("taken");
+  expect(board.checkCoords("A3")).toBe("taken");
+
+  //sides
+  expect(board.checkCoords("B1")).toBe("taken");
+  expect(board.checkCoords("B3")).toBe("taken");
+
+  //bottom
+  expect(board.checkCoords("C1")).toBe("taken");
+  expect(board.checkCoords("C2")).toBe("taken");
+  expect(board.checkCoords("C3")).toBe("taken");
+});
+
+test("Should mark surroundings as unusable space but it shouldn't erase the ship.", () => {
+  const board = gameBoard();
+
+  const mediumShip = ship(3);
+  const coordsMedium = ["B2", "B3", "B4"];
+
+  board.placeShip(mediumShip, coordsMedium);
+  //top
+  expect(board.checkCoords("A1")).toBe("taken");
+  expect(board.checkCoords("A2")).toBe("taken");
+  expect(board.checkCoords("A3")).toBe("taken");
+  expect(board.checkCoords("A4")).toBe("taken");
+  expect(board.checkCoords("A5")).toBe("taken");
+
+  //sides
+  expect(board.checkCoords("B1")).toBe("taken");
+  expect(board.checkCoords("B5")).toBe("taken");
+
+  //bottom
+  expect(board.checkCoords("C1")).toBe("taken");
+  expect(board.checkCoords("C2")).toBe("taken");
+  expect(board.checkCoords("C3")).toBe("taken");
+  expect(board.checkCoords("C4")).toBe("taken");
+  expect(board.checkCoords("C5")).toBe("taken");
+
+  //Check the ship
+  expect(board.checkCoords("B2")).toBe(mediumShip);
+  expect(board.checkCoords("B3")).toBe(mediumShip);
+  expect(board.checkCoords("B4")).toBe(mediumShip);
+});
+
+
+test("Should not place a ship in a taken slot.", () => {
+  const board = gameBoard();
+
+  const mediumShip = ship(3);
+  const coordsMedium = ["B2", "B3", "B4"];
+
+  board.placeShip(mediumShip, coordsMedium);
+  //top
+  expect(board.checkCoords("A1")).toBe("taken");
+  expect(board.checkCoords("A2")).toBe("taken");
+  expect(board.checkCoords("A3")).toBe("taken");
+  expect(board.checkCoords("A4")).toBe("taken");
+  expect(board.checkCoords("A5")).toBe("taken");
+
+  //sides
+  expect(board.checkCoords("B1")).toBe("taken");
+  expect(board.checkCoords("B5")).toBe("taken");
+
+  //bottom
+  expect(board.checkCoords("C1")).toBe("taken");
+  expect(board.checkCoords("C2")).toBe("taken");
+  expect(board.checkCoords("C3")).toBe("taken");
+  expect(board.checkCoords("C4")).toBe("taken");
+  expect(board.checkCoords("C5")).toBe("taken");
+
+  //Check the ship
+  expect(board.checkCoords("B2")).toBe(mediumShip);
+  expect(board.checkCoords("B3")).toBe(mediumShip);
+  expect(board.checkCoords("B4")).toBe(mediumShip);
+
+  const newShip = ship(1);
+  const newCoords = ["C1"]; //Is a coord that should be labeled "taken"
+  expect(board.placeShip(newShip, newCoords)).toBe("Can't place ship here.");
+  expect(board.checkCoords("C1")).toBe("taken");
 });
