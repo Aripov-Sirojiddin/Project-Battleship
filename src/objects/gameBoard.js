@@ -23,7 +23,6 @@ const gameBoard = () => {
     }
   };
   const removeCoords = (coordinates) => {
-    console.log(coordinates)
     for (let i in coordinates) {
       markSurroundingsForOne(coordinates[i], true);
       delete board[coordinates[i]];

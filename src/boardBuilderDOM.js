@@ -4,11 +4,20 @@ const boardBuilder = (player) => {
   const showDialog = () => {
     const parentDiv = document.createElement("div");
     parentDiv.classList.add("modal");
-
+    const boardAndShips = document.createElement("div");
+    boardAndShips.classList.add("container");
     const ships = showShipOptions();
 
-    parentDiv.appendChild(createBoard());
-    parentDiv.appendChild(ships);
+    boardAndShips.appendChild(createBoard());
+    boardAndShips.appendChild(ships);
+    
+    parentDiv.appendChild(boardAndShips);
+
+    const doneButton = document.createElement("button");
+    doneButton.textContent = "Ready";
+    doneButton.classList.add("ready_btn");
+
+    parentDiv.appendChild(doneButton);
     return parentDiv;
   };
   const createBoard = () => {
@@ -105,16 +114,10 @@ const boardBuilder = (player) => {
     const shipContainer = document.getElementById(
       event.dataTransfer.getData("ship-id")
     );
-    const size = shipContainer.getAttribute("size");
-    let isVertical = shipContainer.classList.contains("rotate");
+
     const coords = event.target.id;
 
-    let shipCoords = placeshipOnBoard(size, isVertical, coords);
-    if (shipCoords) {
-      if (player.gameBoard.placeShip(ship(size), shipCoords) === "Success!") {
-        colorButtons(shipCoords);
-      }
-    }
+    placeshipOnBoard(shipContainer, coords);
   };
 
   const removeShipFromBoard = (coords) => {
@@ -127,10 +130,20 @@ const boardBuilder = (player) => {
     player.gameBoard.removeCoords(coords);
   };
 
-  const placeshipOnBoard = (size, isVertical, coords) => {
-    return isVertical
+  const placeshipOnBoard = (shipContainer, coords) => {
+    const size = shipContainer.getAttribute("size");
+    const isVertical = shipContainer.classList.contains("rotate");
+    const shipCoords = isVertical
       ? placeVertical(size, coords)
       : placeHorizontal(size, coords);
+
+    if (
+      shipCoords &&
+      player.gameBoard.placeShip(ship(size), shipCoords) === "Success!"
+    ) {
+      colorButtons(shipCoords);
+      shipContainer.remove();
+    }
   };
 
   const placeVertical = (size, coords) => {

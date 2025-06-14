@@ -11,4 +11,6 @@ import "./styles.css";
   const newBoard = boardBuilder(player1);
 
   body.appendChild(newBoard.showDialog());
+
+  
 })();
