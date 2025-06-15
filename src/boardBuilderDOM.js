@@ -97,7 +97,7 @@ const boardBuilder = (player, otherPlayerName = "") => {
 
     const shipsParent = document.createElement("div");
     shipsParent.classList.add("ship_options");
-    const shipSizes = [5];
+    const shipSizes = [5,4,3,3,2,2,1,1,1,1];
 
     for (let i in shipSizes) {
       const size = shipSizes[i];

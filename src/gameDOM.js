@@ -40,7 +40,7 @@ const gameDOM = (player, opponent, restartFunction) => {
         switchView();
       } else {
         customAlertDOM(
-          `Commander ${player1.name}! We have not striked the enemy yet! No time to retreat!`
+          `Commander ${player1.name}! We must strike the enemy! No time to retreat!`
         );
       }
     });
@@ -110,26 +110,28 @@ const gameDOM = (player, opponent, restartFunction) => {
   };
 
   const sendAttack = (coord) => {
-    madeMove = true;
     const opponentBoard = document.querySelector("#opponent");
-    updateButton(opponentBoard, coord);
-    player1Turn = !player1Turn;
-    opponentBoard.style.zIndex = "-10";
+    const shouldSwitch = updateButton(opponentBoard, coord);
 
     const currOpponent = player1Turn ? player : opponent;
     const currPlayer = player1Turn ? opponent : player;
 
-    console.log(currOpponent);
-    if (currOpponent.gameBoard.isFleetDestroyed()) {
+    if (currPlayer.gameBoard.isFleetDestroyed()) {
       customAlertDOM(
         "An honorable battle commander!",
         () => {
           document.getElementById("boards").remove();
           restartFunction();
         },
-        `Commander ${currPlayer.name} wins the duel!`,
+        `Commander ${currOpponent.name} wins the duel!`,
         "Restart?"
       );
+    }
+
+    if (shouldSwitch) {
+      player1Turn = !player1Turn;
+      madeMove = true;
+      opponentBoard.style.zIndex = "-10";
     }
   };
 
@@ -147,6 +149,7 @@ const gameDOM = (player, opponent, restartFunction) => {
   const updateButton = (boardDiv, coord) => {
     const currPlayer = player1Turn ? opponent : player;
     const button = boardDiv.querySelector(`#${coord}`);
+    button.disabled = true;
     switch (currPlayer.gameBoard.receiveAttack(coord)) {
       case "destroyed!!!":
         button.textContent = "⦿";
@@ -159,18 +162,18 @@ const gameDOM = (player, opponent, restartFunction) => {
           button.style.background = "red";
           button.style.color = "rgb(249, 173, 173)";
         }
-        break;
+        return false;
       case "hit!":
         playerMoves[currPlayer.name][coord] = "hit!";
         button.textContent = "⦿";
-        break;
+        return false;
       case "miss...":
         playerMoves[currPlayer.name][coord] = "miss...";
         button.style.color = "grey";
         button.textContent = "×";
-        break;
+        return true;
     }
-    button.disabled = true;
+    return true;
   };
 
   const updateButtonFromMemory = (button, state) => {
