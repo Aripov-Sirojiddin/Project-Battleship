@@ -276,17 +276,3 @@ test("Check coords to be within bounds of the board. Should be true.", () => {
 
   expect(board.coordsWithinBounds(coords)).toBe(false);
 });
-
-test("Removes coordinates", () => {
-  const board = gameBoard();
-
-  const mediumShip = ship(3);
-  const coordsMedium = ["B2", "B3", "B4"];
-
-  board.placeShip(mediumShip, coordsMedium);
-
-  board.removeCoords(coordsMedium);
-  expect(board.checkCoords(coordsMedium[0])).toBe(undefined);
-  expect(board.checkCoords(coordsMedium[1])).toBe(undefined);
-  expect(board.checkCoords(coordsMedium[2])).toBe(undefined);
-});

@@ -22,12 +22,7 @@ const gameBoard = () => {
       markSurroundingsForOne(coordinates[i]);
     }
   };
-  const removeCoords = (coordinates) => {
-    for (let i in coordinates) {
-      markSurroundingsForOne(coordinates[i], true);
-      delete board[coordinates[i]];
-    }
-  };
+  
   const coordsWithinBounds = (coordinates) => {
     for (let i in coordinates) {
       const coordinate = coordinates[i];
@@ -93,7 +88,6 @@ const gameBoard = () => {
 
   return {
     board,
-    removeCoords,
     placeShip,
     coordsWithinBounds,
     checkCoords,
