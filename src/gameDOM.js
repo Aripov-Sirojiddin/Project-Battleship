@@ -1,22 +1,19 @@
-const moves = new Set();
-const randomCoords = () => {
-  let result = undefined;
-  do {
-    const letter = String.fromCharCode(Math.round(Math.random() * 9) + 65);
-    const number = Math.round(Math.random() * 9) + 1;
-    result = `${letter}${number}`;
-  } while (moves.has(result) && moves.size < 100);
-  moves.add(result);
-  return result;
-};
 
 const gameDOM = (player, opponent) => {
-  let playerTurn = true;
+  let player1Turn = true;
 
-  const createBothBoards = () => {
-    const playerBoard = createBoard(player, true);
+  const switchView = () => {
+    if(player1Turn) {
+      createPlayerView(player, opponent);
+    } else {
+      createPlayerView(opponent, player);
+    }
+  }
+
+  const createPlayerView = (player1 = player, player2 = opponent) => {
+    const playerBoard = createBoard(player1, true);
     playerBoard.id = "player";
-    const opponentBoard = createBoard(opponent, false);
+    const opponentBoard = createBoard(player2, false);
     opponentBoard.id = "opponent";
     const newChildren = [playerBoard, opponentBoard];
 
@@ -50,8 +47,9 @@ const gameDOM = (player, opponent) => {
       for (let i = 0; i < 10; i++) {
         const button = document.createElement("button");
         button.id = `${label}${i + 1}`;
-        if (showShips && board[button.id] !== undefined) {
-          button.style.background = "black";
+        button.classList.add("blue_btn");
+        if (showShips && board[button.id] !== undefined && board[button.id] !== "taken") {
+          button.style.background = "rgb(0, 163, 22)";
         }
         if (showShips) {
           button.disabled = true;
@@ -67,19 +65,18 @@ const gameDOM = (player, opponent) => {
   };
 
   const sendAttack = (coord) => {
-    if (playerTurn) {
+    if (player1Turn) {
       const opponentBoard = document.querySelector("#opponent");
       updateButton(opponent, opponentBoard, coord);
-      playerTurn = !playerTurn;
-      receiveAttack(randomCoords());
+      player1Turn = !player1Turn;
     }
   };
 
   const receiveAttack = (coord) => {
-    if (!playerTurn) {
+    if (!player1Turn) {
       const playerBoard = document.querySelector("#player");
       updateButton(player, playerBoard, coord);
-      playerTurn = !playerTurn;
+      player1Turn = !player1Turn;
     }
   };
 
@@ -110,7 +107,7 @@ const gameDOM = (player, opponent) => {
     }
   };
   return {
-    createBothBoards,
+    createPlayerView,
     receiveAttack,
   };
 };

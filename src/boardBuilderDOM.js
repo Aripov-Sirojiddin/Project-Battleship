@@ -1,7 +1,8 @@
+const customAlertDOM = require("./customAlertDOM");
 const ship = require("./objects/ship");
 
 const boardBuilder = (player) => {
-  const showDialog = () => {
+  const showDialog = (onDoneAction = () => {}) => {
     const parentDiv = document.createElement("div");
     parentDiv.classList.add("modal");
     const boardAndShips = document.createElement("div");
@@ -10,22 +11,48 @@ const boardBuilder = (player) => {
 
     boardAndShips.appendChild(createBoard());
     boardAndShips.appendChild(ships);
-    
+
     parentDiv.appendChild(boardAndShips);
 
     const doneButton = document.createElement("button");
     doneButton.textContent = "Ready";
     doneButton.classList.add("ready_btn");
+    doneButton.addEventListener("click", () => {
+      if (player.name === "" || player.name === undefined) {
+        customAlertDOM("Please enter your credentials (aka name) commander!");
+        return;
+      }
 
+      const shipsLeftInOptions =
+        document.querySelector(".ship_options").childElementCount;
+      if (shipsLeftInOptions === 0) {
+        parentDiv.remove();
+        onDoneAction();
+      } else {
+        customAlertDOM(
+          `You still have ${shipsLeftInOptions} more ship(s) to place Commander ${player.name}!`
+        );
+      }
+    });
     parentDiv.appendChild(doneButton);
-    return parentDiv;
+    document.body.appendChild(parentDiv);
   };
   const createBoard = () => {
     const parentDiv = document.createElement("div");
+    parentDiv.classList.add("vertical_container");
 
-    const playerLabel = document.createElement("h1");
-    playerLabel.textContent = `${player.name}`;
-    parentDiv.appendChild(playerLabel);
+    const playerName = document.createElement("input");
+    playerName.placeholder = `Enter your name here!`;
+    playerName.addEventListener("input", (e) => {
+      if (e.target.value !== "") {
+        player.name = e.target.value;
+        e.target.style.borderStyle = "none";
+      } else {
+        e.target.style.borderStyle = "dashed";
+      }
+    });
+
+    parentDiv.appendChild(playerName);
 
     const boardDiv = document.createElement("board");
     boardDiv.classList.add("board");
@@ -67,7 +94,7 @@ const boardBuilder = (player) => {
 
     const shipsParent = document.createElement("div");
     shipsParent.classList.add("ship_options");
-    const shipSizes = [5, 4, 3, 2, 2, 1, 1, 1, 1];
+    const shipSizes = [5, 4];
 
     for (let i in shipSizes) {
       const size = shipSizes[i];
@@ -144,7 +171,6 @@ const boardBuilder = (player) => {
       colorButtons(shipCoords);
       shipContainer.remove();
     }
-    console.log(player.gameBoard.board)
   };
 
   const placeVertical = (size, coords) => {
