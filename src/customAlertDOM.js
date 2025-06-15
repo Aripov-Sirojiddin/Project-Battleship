@@ -1,4 +1,4 @@
-const customAlertDOM = (msg, action = () => {}, titleMsg="Incoming transmission!",) => {
+const customAlertDOM = (msg, action = () => {}, titleMsg="Incoming transmission!", btn_label="Aye Captain!") => {
   const parentDiv = document.createElement("div");
   parentDiv.classList.add("modal");
 
@@ -10,7 +10,7 @@ const customAlertDOM = (msg, action = () => {}, titleMsg="Incoming transmission!
   message.textContent = msg;
 
   const doneButton = document.createElement("button");
-  doneButton.textContent = "Aye captain!";
+  doneButton.textContent = btn_label;
   doneButton.classList.add("ready_btn");
 
   doneButton.addEventListener("click", () => {

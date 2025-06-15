@@ -1,7 +1,7 @@
 const customAlertDOM = require("./customAlertDOM");
 const ship = require("./objects/ship");
 
-const boardBuilder = (player) => {
+const boardBuilder = (player, otherPlayerName = "") => {
   const showDialog = (onDoneAction = () => {}) => {
     const parentDiv = document.createElement("div");
     parentDiv.classList.add("modal");
@@ -20,6 +20,9 @@ const boardBuilder = (player) => {
     doneButton.addEventListener("click", () => {
       if (player.name === "" || player.name === undefined) {
         customAlertDOM("Please enter your credentials (aka name) commander!");
+        return;
+      } else if (player.name === otherPlayerName) {
+        customAlertDOM("Commander! You can't be a doppelganger! Choose your own unique name Commander!");
         return;
       }
 
@@ -94,7 +97,7 @@ const boardBuilder = (player) => {
 
     const shipsParent = document.createElement("div");
     shipsParent.classList.add("ship_options");
-    const shipSizes = [5, 4];
+    const shipSizes = [5];
 
     for (let i in shipSizes) {
       const size = shipSizes[i];
